@@ -96,7 +96,7 @@ func classStatOutput(dayStat *dayStat) {
 	table.SetHeader(header)
 	table.SetColumnAlignment([]int{tablewriter.ALIGN_LEFT})
 
-	data := make([][]string, 0)
+	rows := make([][]string, 0)
 	dayStat.ClassStatMap = sortClassMap(dayStat.ClassStatMap)
 	for _, stat := range dayStat.ClassStatMap {
 		levelCntArray := make([]string, 0)
@@ -109,10 +109,14 @@ func classStatOutput(dayStat *dayStat) {
 			levelCntArray = append(levelCntArray, fmt.Sprintf("%d", levelCnt))
 			sum += levelCnt
 		}
-		data = append(data, []string{stat.class, levelCntArray[0], levelCntArray[1], levelCntArray[2], fmt.Sprintf("%d", sum)})
+		row := make([]string, 0)
+		row = append(row, stat.class)
+		row = append(row, levelCntArray...)
+		row = append(row, fmt.Sprintf("%d", sum))
+		rows = append(rows, row)
 	}
 
-	for _, v := range data {
+	for _, v := range rows {
 		table.Append(v)
 	}
 	fmt.Printf("CLASS-INFO-STAT|%s\n", dayStat.Day)
