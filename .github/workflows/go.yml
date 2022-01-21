@@ -62,6 +62,13 @@ jobs:
         id: verify-changed-files
         with:
           files: README.md
+      
+      - name: Commit Changes
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "update README" -a
 
       - name: Push changes
         if: steps.verify-changed-files.outputs.files_changed == 'true'
